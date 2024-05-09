@@ -1,22 +1,29 @@
 #!/usr/bin/python3
+""" min op """
+
+
 def minOperations(n):
     if n <= 1:
         return 0
 
-    dp = [0] * (n + 1)
+    op = 0
+    factor = 2
 
-    for i in range(2, n + 1):
-        dp[i] = float('inf')
+    while factor * factor <= n:
+        while n % factor == 0:
+            op += factor
+            n //= factor
+        factor += 1
 
-        for j in range(2, i + 1):
-            if i % j == 0:
-                dp[i] = min(dp[i], dp[j] + i // j)
+    if n > 1:
+        op += n
 
-    return dp[n]
+    return op
 
-n = 4
-print("Min number of operations to reach {} characters: {}".format(n, minOperations(n)))
 
-n = 12
-print("Min number of operations to reach {} characters: {}".format(n, minOperations(n)))
+if __name__ == "__main__":
+    n1 = 4
+    print("Min # of operations to reach {} char: {}".format(n1, minOperations(n1)))
 
+    n2 = 12
+    print("Min # of operations to reach {} char: {}".format(n2, minOperations(n2)))
