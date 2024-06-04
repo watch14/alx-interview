@@ -1,15 +1,28 @@
 #!/usr/bin/node
 
-const express = require('express')
-const app = express()
+const request = require('request')
 
 const url = `https://swapi-api.alx-tools.com/api/films/${process.argv[2]}/`
 
-app.get(url, (err, resp, body) =>{
+request.get(url, (err, resp, body) =>{
     if (err) {
         console.error(err);
     } else {
         const data = JSON.parse(body);
-        console.log(data);
+        const characters = data.characters;
+
+        const charNames = []
+        
+        for (let i = 0 ; i < characters.length ; i++) {
+            request.get(characters[i], (err, resp, body) =>{
+                if (err) {
+                    console.log(err)
+                } else {
+                    let data_name = JSON.parse(body);
+                    console.log(data_name.name)
+                    charNames.push(data_name.name);
+                }
+            });
+        }
     }
 });
