@@ -1,22 +1,26 @@
 #!/usr/bin/python3
-""" making-changes """
+""" Making changes """
 
 
 def makeChange(coins, total):
-    """ makechane/ """
-    if total < 0:
-        return 0
-    if total == 0:
+    """ makeChange """
+    if total <= 0:
         return 0
 
-    dp = [float('inf')] * (total + 1)
-    dp[0] = 0
+    coins.sort(reverse=True)
+
+    coins_used = 0
+    amount_checked = 0
 
     for coin in coins:
-        for amount in range(coin, total + 1):
-            dp[amount] = min(dp[amount], dp[amount - coin] + 1)
+        while amount_checked < total:
+            amount_checked += coin
+            coins_used += 1
 
-    if dp[total] == float('inf'):
-        return -1
-    else:
-        return dp[total]
+        if amount_checked == total:
+            return coins_used
+
+        amount_checked -= coin
+        coins_used -= 1
+
+    return -1
