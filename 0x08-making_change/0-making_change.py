@@ -3,6 +3,7 @@
 
 
 def makeChange(coins, total):
+    """ makechane/ """
     if total < 0:
         return 0
     if total == 0:
