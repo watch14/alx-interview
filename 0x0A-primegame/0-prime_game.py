@@ -1,34 +1,42 @@
 #!/usr/bin/python3
-""" Island Perimeter """
+"""0. Prime Game - Maria and Ben are playing a game"""
 
 
-def island_perimeter(grid):
-    """ Calculates the perimeter of the island described in grid """
-    perimeter = 0
-    rows = len(grid)
-    cols = len(grid[0]) if rows > 0 else 0
+def isWinner(x, nums):
+    """x - rounds
+    nums - numbers list
+    """
+    if x <= 0 or nums is None:
+        return None
+    if x != len(nums):
+        return None
 
-    for i in range(rows):
-        for j in range(cols):
-            if grid[i][j] == 1:
-                if i == 0 or grid[i-1][j] == 0:
-                    perimeter += 1
-                if i == rows - 1 or grid[i+1][j] == 0:
-                    perimeter += 1
-                if j == 0 or grid[i][j-1] == 0:
-                    perimeter += 1
-                if j == cols - 1 or grid[i][j+1] == 0:
-                    perimeter += 1
+    ben = 0
+    maria = 0
 
-    return perimeter
+    a = [1 for x in range(sorted(nums)[-1] + 1)]
+    a[0], a[1] = 0, 0
+    for i in range(2, len(a)):
+        rm_multiples(a, i)
+
+    for i in nums:
+        if sum(a[0:i + 1]) % 2 == 0:
+            ben += 1
+        else:
+            maria += 1
+    if ben > maria:
+        return "Ben"
+    if maria > ben:
+        return "Maria"
+    return None
 
 
-if __name__ == "__main__":
-    grid = [
-        [0, 0, 0, 0, 0, 0],
-        [0, 1, 0, 0, 0, 0],
-        [0, 1, 0, 0, 0, 0],
-        [0, 1, 1, 1, 0, 0],
-        [0, 0, 0, 0, 0, 0]
-    ]
-    print(island_perimeter(grid))
+def rm_multiples(ls, x):
+    """removes multiple
+    of primes
+    """
+    for i in range(2, len(ls)):
+        try:
+            ls[i * x] = 0
+        except (ValueError, IndexError):
+            break
